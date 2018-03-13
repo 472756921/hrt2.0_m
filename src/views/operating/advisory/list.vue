@@ -28,7 +28,7 @@
         </Card>
 
         <Modal v-model="chatF" :title="'与' + userName + '聊天'" :mask-closable="false">
-            <conversationC :listType="listType" v-if="chatF"/>
+            <conversationC :listType="listType" :messageID="messsageID" v-if="chatF"/>
             <div slot="footer">
                 <Button type="warning" size="large" long @click="chatF=false">关闭窗口</Button>
             </div>
@@ -54,8 +54,8 @@
             },
             on: {
                 click: () => {
-                    // alert('跳转回复界面-' + 'id:' + currentRow.id);
                     vm.chatF = true;
+                    vm.messsageID = currentRow.id;
                 }
             }
         }, '回复');
@@ -117,7 +117,8 @@
                 listType: 'back',
                 columns1: [],
                 data1: [],
-                initTable1: []
+                initTable1: [],
+                messsageID: ''
             };
         },
         mounted () {

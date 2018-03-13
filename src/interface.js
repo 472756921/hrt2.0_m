@@ -46,3 +46,51 @@ export const Hdetail = function () {
     const API = host + URL;
     return API;
 };
+// 用户基本信息
+export const userdetail = function () {
+    const URL = '/customer/user/detail';
+    const API = host + URL;
+    return API;
+};
+// 用户云设备
+export const equipment = function () {
+    const URL = '/customer/user/could/equipment';
+    const API = host + URL;
+    return API;
+};
+// 获取用户个人消费记录
+export const getCustomerHistoryOrder = function () {
+    const URL = '/customer/getCustomerHistoryOrder';
+    const API = host + URL;
+    return API;
+};
+// 获取用户个人服务余额
+export const getCustomerServiceDetial = function () {
+    const URL = '/customer/getCustomerServiceDetial';
+    const API = host + URL;
+    return API;
+};
+// 获取用户个人服务记录
+export const getServiceDetial = function () {
+    const URL = '/customer/getServiceDetial';
+    const API = host + URL;
+    return API;
+};
+// 获取用户个人服务记录
+export const findChatLog = function () {
+    const URL = '/messageLog/findChatLog';
+    const API = host + URL;
+    return API;
+};
+// 获取用户个人服务记录
+export const addChatLog = function () {
+    const URL = '/messageLog/addChatLog';
+    const API = host + URL;
+    return API;
+};
+// 设置团队坐诊时间
+export const saveGroupTime = function () {
+    const URL = '/team/saveGroupTime';
+    const API = host + URL;
+    return API;
+};

@@ -42,7 +42,7 @@
 
 <script>
     import * as tables from '../tableData';
-    import {teamGroupTime} from '../../../interface';
+    import {teamGroupTime, saveGroupTime} from '../../../interface';
     export default {
         name: 'setDate',
         data () {
@@ -63,6 +63,9 @@
         },
         mounted () {
             this.getData();
+            this.$ajax.post(saveGroupTime(), { num: 0, teamId: 6, visitDate: 'string' }).then((res) => {
+            }).catch((hd) => {
+            });
         },
         methods: {
             getData () {

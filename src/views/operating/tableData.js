@@ -56,18 +56,18 @@ export let searchTable2 = [
 
 export let columns2 = [
     {key: 'name', title: '姓名'},
-    {key: 'tel', title: '电话号码'},
-    {key: 'idnumber', title: '身份证号', width: 157},
-    {key: 'age', title: '年龄'},
+    {key: 'phone', title: '电话号码'},
+    {key: 'id_number', title: '身份证号', width: 157},
     {
-        key: 'sex',
-        title: '性别',
+        key: 'age',
+        title: '年龄',
         render: (h, p) => {
-            if (p.row.sex === 0) { return '女'; } else if (p.row.sex === 1) { return '男'; }
+            return GetAge(p.row.id_number);
         }
     },
-    {key: 'team', title: '团队'},
-    {key: 'balance', title: '余额'},
+    {key: 'gender', title: '性别'},
+    {key: 'teamName', title: '团队'},
+    {key: 'money', title: '余额'},
     {title: '操作', align: 'center', key: 'handle', handle: ['check']}
 ];
 export let userList = [

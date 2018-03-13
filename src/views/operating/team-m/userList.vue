@@ -15,8 +15,8 @@
             <p slot="title"><Icon type="pinpoint"></Icon> 用户列表</p>
             <Row>
                 <Input v-model="searchConName1" icon="search" @on-change="handleSearch1" placeholder="请输入姓名搜索..." style="width: 200px"/>
-                <Select v-model="model1" style="width:200px">
-                    <Option v-for="item in teamList" :value="item.tid" :key="item.tid">{{ item.team }}</Option>
+                <Select v-model="model1" style="width:200px" @on-change="onSelectedDrug">
+                    <Option v-for="item in teamList.data" :value="item.id" :key="item.id">{{ item.teamName }}</Option>
                 </Select>
             </Row>
             <Row class="margin-top-10 searchable-table-con1">
@@ -28,8 +28,8 @@
 
 <script>
     import * as tables from '../tableData';
-    import { teamData } from '../init_data';
-    import { usersList } from '../../../interface';
+    import * as initData from '../init_data';
+    import { usersList, Hdetail } from '../../../interface';
 
     const checkButton = (vm, h, currentRow, index) => {
         return h('Button', {
@@ -66,16 +66,23 @@
         },
         methods: {
             getData () {
-                this.$ajax.get(usersList(), {params: {page: 1, size: 50, teamId: 1}}).then((res) => {
-                    tables.userList = res.data.data.list;
-                    this.init();
+                this.$ajax.get(Hdetail(), {params: {page: 1, size: 50, teamId: 1}}).then((res) => {
+                    initData.teamData = res.data.data;
+                    if (res.data.data.data.length !== 0) {
+                        this.model1 = res.data.data.data[0].id;
+                    }
+                    this.$ajax.get(usersList(), {params: {page: 1, size: 50, teamId: res.data.data.data[0].id}}).then((res) => {
+                        initData.userData = res.data.data.list;
+                        this.init();
+                    }).catch((hd) => {
+                        this.$Message.error('获取失败');
+                    });
                 }).catch((hd) => {
-                    this.$Message.error('获取失败');
                 });
             },
             init () {
-                this.data1 = this.initTable1 = tables.userList;
-                this.teamList = teamData;
+                this.data1 = this.initTable1 = initData.userData;
+                this.teamList = initData.teamData;
                 this.columns1 = tables.columns2;
                 this.columns1.forEach(item => {
                     if (item.handle) {
@@ -118,6 +125,14 @@
                 this.$Message.success({ content: '您开始了对' + this.data1[index].name + '的服务，请尽快联系医生进行通话', duration: 3 });
                 alert('开始了id：' + qid + '的问题');
             },
+            onSelectedDrug () {
+                this.$ajax.get(usersList(), {params: {page: 1, size: 50, teamId: this.model1}}).then((res) => {
+                    initData.userData = res.data.data.list;
+                    this.init();
+                }).catch((hd) => {
+                    this.$Message.error('获取失败');
+                });
+            }
         },
         mounted () {
             this.getData();

@@ -35,7 +35,7 @@
 
 <script>
     import Cookies from 'js-cookie';
-    import { teamData } from './operating/init_data';
+    import * as initData from './operating/init_data';
     import {ajaxLogin, Hdetail} from '../interface';
 
     export default {
@@ -70,8 +70,7 @@
                                     Cookies.set('access', 1);
                                 }
                                 this.$ajax.get(Hdetail(), {params: {page: 1, size: 50, teamId: 1}}).then((res) => {
-                                    console.log(res.data);
-                                    // teamData = res.data.data;
+                                    initData.teamData = res.data.data;
                                     this.$router.push({
                                         name: 'home_index'
                                     });
@@ -85,7 +84,7 @@
                         });
                     }
                 });
-            },
+            }
         }
     };
 </script>

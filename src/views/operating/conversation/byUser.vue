@@ -28,7 +28,7 @@
         float: right;
         color: #fff;
         background-color: #8492A6;
-        box-shadow: 0 2px 10px #333;
+        box-shadow: 0 2px 10px #ccc;
     }
 
     .usertalkinfo:before {
@@ -57,7 +57,7 @@
         font-size: .6rem;
         width: 100%;
         line-height: 2rem;
-        color: #fff;
+        color: #ccc;
         overflow: auto;
     }
 </style>

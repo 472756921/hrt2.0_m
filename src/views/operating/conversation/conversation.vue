@@ -1,28 +1,22 @@
 <template>
     <div class="conversation">
-        <talk ref="talk" :sID="sID"/>
-        <sendContent @sendMessage="sendMessages" :sID="sID"/>
+        <talk ref="talk" :messageID="messageID"/>
+        <sendContent @sendMessage="sendMessages" :messageID="messageID"/>
     </div>
 </template>
 
 <script>
     import talk from './talk';
     import sendContent from './sendContent';
+    import dateTr from './dateTr';
 
     export default {
         name: 'conversation',
-        data () {
-            return {
-                sID: ''
-            };
-        },
-        created () {
-            this.sID = this.$route.params.id;
-        },
+        props: ['messageID'],
         components: {talk, sendContent},
         methods: {
             sendMessages (data) {
-                this.$refs.talk.newMessage(data, new Date().pattern('yyyy-MM-dd hh:mm:ss'));
+                this.$refs.talk.newMessage(data, '');
             }
         }
     };

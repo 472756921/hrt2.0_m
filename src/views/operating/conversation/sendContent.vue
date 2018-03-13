@@ -5,7 +5,6 @@
         <Button class="getMessage" @click="getMessage" v-if="!isContent" type="primary" icon="images"></Button>
         <input type="file" id="fileElem" multiple accept="image/*" name="file" style="display:none"
                @change="handleFiles()">
-
         <Modal v-model="showF" title="查看详情">
             <img :src="imgSrc" width="100%"/>
         </Modal>
@@ -17,8 +16,9 @@
 
     export default {
         name: 'send-content',
+        props: ['messageID'],
         created () {
-            this.sID = this.$route.params.id;
+            this.sID = this.messageID;
         },
         data () {
             return {

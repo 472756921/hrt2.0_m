@@ -30,4 +30,4 @@ Date.prototype.pattern = function (fmt) {
         }
     }
     return fmt;
-}
+};

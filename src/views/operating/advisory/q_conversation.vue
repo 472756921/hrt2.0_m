@@ -1,6 +1,6 @@
 <template>
     <div class="conversation_content">
-        <conversation/>
+        <conversation :messageID="messageID"/>
     </div>
 </template>
 
@@ -10,7 +10,7 @@
     export default {
         name: 'q_conversation',
         components: {conversation},
-        props: ['listType'],
+        props: ['listType', 'messageID'],
         created () {
         },
         methods: {

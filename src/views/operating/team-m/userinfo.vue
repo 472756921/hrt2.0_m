@@ -6,19 +6,19 @@
             </p>
             <Row style="overflow: auto;">
                 <Col :md="2" :lg="1" :sm="2"><div><Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" /></div></Col>
-                <Col :md="4" :lg="2" :sm="5"><div>姓名：刘德华</div></Col>
-                <Col :md="3" :lg="2" :sm="3"><div>年龄：29</div></Col>
-                <Col :md="2" :lg="2" :sm="3"><div>性别：男</div></Col>
-                <Col :md="5" :lg="3" :sm="7"><div>电话：18399954837</div></Col>
-                <Col :md="8" :lg="5" :sm="11"><div>身份证号码：510303199302210255</div></Col>
-                <Col :md="5" :lg="3" :sm="7"><div>健康豆余额：43234</div></Col>
-                <Col :md="5" :lg="3" :sm="6"><div>紧急联系人：王勉</div></Col>
-                <Col :md="5" :lg="3" :sm="7"><div>号码：18399954837</div></Col>
-                <Col :md="6" :lg="4" :sm="8"><div>团队：王勉，周杰伦，汪峰</div></Col>
+                <Col :md="4" :lg="2" :sm="5"><div>姓名：{{this.user.realName}}</div></Col>
+                <Col :md="3" :lg="2" :sm="3"><div>年龄：{{this.user.gender}}</div></Col>
+                <Col :md="2" :lg="2" :sm="3"><div>性别：{{this.user.gender}}</div></Col>
+                <Col :md="5" :lg="3" :sm="7"><div>电话：{{this.user.phone}}</div></Col>
+                <Col :md="8" :lg="5" :sm="11"><div>身份证号码：{{this.user.idNumber}}</div></Col>
+                <Col :md="5" :lg="3" :sm="7"><div>健康豆余额：{{this.user.money}}</div></Col>
+                <Col :md="5" :lg="3" :sm="6"><div>紧急联系人：{{this.user.urgentName}}</div></Col>
+                <Col :md="5" :lg="3" :sm="7"><div>号码：{{this.user.urgentPhone}}</div></Col>
+                <Col :md="6" :lg="4" :sm="8"><div>团队：{{this.user.gender}}</div></Col>
             </Row>
             <br/>
-            <Button type="primary" size="small" icon="ios-telephone" v-if="!isPC"><a :href="'tel:17780024094'" style="color: #fff">呼叫用户</a></Button>
-            <Button type="success" size="small" icon="ios-telephone" v-if="!isPC"><a :href="'tel:17780024094'" style="color: #fff">呼叫紧急联系人</a></Button>
+            <Button type="primary" size="small" icon="ios-telephone" v-if="!isPC"><a :href="'tel:'+this.user.phone" style="color: #fff">呼叫用户</a></Button>
+            <Button type="success" size="small" icon="ios-telephone" v-if="!isPC"><a :href="'tel:'+this.user.urgentPhone" style="color: #fff">呼叫紧急联系人</a></Button>
             <Button type="error" size="small" icon="social-yen" @click="czckF=true">充值</Button>
         </Card>
         <br/>
@@ -83,6 +83,7 @@
     import userServiceHister from './userData/userServiceHister';
     import Datatable from './userData/Datatable';
     import KeyIndicators from './userData/KeyIndicators';
+    import {userdetail} from '../../../interface';
 
     export default {
         name: 'userinfo',
@@ -102,7 +103,8 @@
                 moeny: '',
                 value1: '',
                 isPC: false,
-                czckF: false
+                czckF: false,
+                user: ''
             };
         },
         created () {
@@ -116,10 +118,18 @@
             if (!isWX && !isIOS && !isAndroid && !isWindows && !isBlackBerry) {
                 this.isPC = true;
             }
+            this.getData();
         },
         methods: {
             czgn () {
                 alert(this.moeny);
+            },
+            getData () {
+                this.$ajax.get(userdetail(), {params: {customerId: this.$route.params.user_id}}).then((res) => {
+                    this.user = res.data.data;
+                }).catch((hd) => {
+                    this.$Message.error('获取失败');
+                });
             }
         }
     };

@@ -27,6 +27,7 @@
         },
         methods: {
             init () {
+
                 this.data = userHeaData;
             },
         },

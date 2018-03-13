@@ -22,7 +22,7 @@
         padding: .6rem;
         border-radius: .4rem;
         font-size: .8rem;
-        box-shadow: -2px 2px 10px #666;
+        box-shadow: -2px 2px 10px #ccc;
     }
 
     .doctalkinfo {
@@ -52,7 +52,7 @@
         font-size: .6rem;
         width: 100%;
         line-height: 2rem;
-        color: #fff;
+        color: #ccc;
         overflow: auto;
     }
 </style>
