@@ -1,7 +1,7 @@
 <template>
     <div class="conversation">
         <talk ref="talk" :messageID="messageID"/>
-        <sendContent @sendMessage="sendMessages" :messageID="messageID"/>
+        <sendContent @sendMessage="sendMessages" :messageID="messageID" v-if="listType=='back'"/>
     </div>
 </template>
 
@@ -12,7 +12,7 @@
 
     export default {
         name: 'conversation',
-        props: ['messageID'],
+        props: ['messageID', 'listType'],
         components: {talk, sendContent},
         methods: {
             sendMessages (data) {

@@ -1,58 +1,47 @@
-import * as initData from './init_data';
 import { GetAge } from './dateTr';
 
-export const columns1 = [
-    {key: 'name', title: '姓名'},
-    {key: 'phone', title: '电话号码'},
-    {key: 'startDate', title: '时间'},
-    {key: 'idNumber', title: '身份证号', width: 157},
-    {
-        key: 'age',
-        title: '年龄',
-        render: (h, p) => {
-            return GetAge(p.row.idNumber);
-        }
-    },
-    {key: 'gender', title: '性别'},
-    {
-        key: 'teamName',
-        title: '团队',
-        filters: initData.teamData.map(item => { return { label: item.team, value: item.team }; }),
-        filterMultiple: false,
-        filterMethod (value, row) {
-            return row.team === value;
-        }
-    },
-    {
-        key: 'status',
-        title: '状态',
-        render: (h, p) => {
-            if (p.row.status === 0) { return '待处理'; } else if (p.row.status === 1) { return '进行中'; } else if (p.row.status === 2) { return '已完成'; }
+export let c = (d) => {
+    return [
+        {key: 'name', title: '姓名'},
+        {key: 'phone', title: '电话号码'},
+        {key: 'startDate', title: '时间'},
+        {key: 'idNumber', title: '身份证号', width: 157},
+        {
+            key: 'age',
+            title: '年龄',
+            render: (h, p) => {
+                return GetAge(p.row.idNumber);
+            }
         },
-        filters: [{label: '进行中', value: 1}, {label: '待处理', value: 0}],
-        filterMultiple: false,
-        filterMethod (value, row) {
-            if (value === 1) {
-                return row.status === value;
-            } else if (value === 0) {
+        {key: 'gender', title: '性别'},
+        {
+            key: 'teamName',
+            title: '团队',
+            filters: d.map(item => {
+                return { label: item.teamName, value: item.teamName };
+            }),
+            filterMultiple: false,
+            filterMethod (value, row) {
+                return row.teamName === value;
+            }
+        },
+        {
+            key: 'status',
+            title: '状态',
+            render: (h, p) => {
+                if (p.row.status === 0) { return '待处理'; } else if (p.row.status === 1) { return '进行中'; } else if (p.row.status === 2) { return '已完成'; }
+            },
+            filters: [{label: '进行中', value: 1}, {label: '待处理', value: 0}, {label: '已完成', value: 2}],
+            filterMultiple: false,
+            filterMethod (value, row) {
                 return row.status === value;
             }
-        }
-    },
-    {title: '操作', align: 'center', width: 140, key: 'handle', handle: ['reply', 'close', 'check']}
-];
+        },
+        {title: '操作', align: 'center', width: 140, key: 'handle', handle: ['reply', 'close', 'check']}
+    ];
+};
 
-export let searchTable1 = [
-    {name: '刘德华', tel: '13628837463', date: '2012/12/12', status: 1, team: '王勉工作室', id: 1, sex: 1, age: 33, idnumber: 510303199302210255},
-    {name: '张雯雯', tel: '13628837463', date: '2012/12/12', status: 0, team: '周杰伦工作室', id: 2, sex: 1, age: 27, idnumber: 510303199302210255},
-    {name: '王小平', tel: '13628837463', date: '2012/12/12', status: 2, team: '汪峰工作室', id: 3, sex: 0, age: 42, idnumber: 510303199302210255}
-];
-
-export let searchTable2 = [
-    {name: '刘德华', tel: '13628837463', date: '2012/12/12', status: 1, team: '王勉工作室', id: 1, sex: 1, age: 33, idnumber: 510303199302210255},
-    {name: '张雯雯', tel: '13628837463', date: '2012/12/12', status: 0, team: '周杰伦工作室', id: 2, sex: 1, age: 27, idnumber: 510303199302210255},
-    {name: '王小平', tel: '13628837463', date: '2012/12/12', status: 2, team: '汪峰工作室', id: 3, sex: 0, age: 42, idnumber: 510303199302210255}
-];
+export let searchTable1 = [];
 
 export let columns2 = [
     {key: 'name', title: '姓名'},
@@ -69,14 +58,6 @@ export let columns2 = [
     {key: 'teamName', title: '团队'},
     {key: 'money', title: '余额'},
     {title: '操作', align: 'center', key: 'handle', handle: ['check']}
-];
-export let userList = [
-    {name: '刘德华', tel: '13628837463', date: '2012/12/12', status: 1, team: '王勉工作室', id: 1, sex: 1, age: 33, idnumber: 510303199302210255, balance: 2100},
-    {name: '刘德华', tel: '13628837463', date: '2012/12/12', status: 1, team: '王勉工作室', id: 1, sex: 1, age: 33, idnumber: 510303199302210255, balance: 2100},
-    {name: '刘德华', tel: '13628837463', date: '2012/12/12', status: 1, team: '王勉工作室', id: 1, sex: 1, age: 33, idnumber: 510303199302210255, balance: 2100},
-    {name: '刘德华', tel: '13628837463', date: '2012/12/12', status: 1, team: '王勉工作室', id: 1, sex: 1, age: 33, idnumber: 510303199302210255, balance: 2100},
-    {name: '刘德华', tel: '13628837463', date: '2012/12/12', status: 1, team: '王勉工作室', id: 1, sex: 1, age: 33, idnumber: 510303199302210255, balance: 2100},
-    {name: '刘德华', tel: '13628837463', date: '2012/12/12', status: 1, team: '王勉工作室', id: 1, sex: 1, age: 33, idnumber: 510303199302210255, balance: 2100}
 ];
 export let userHeaData = [
     {name: '刘德华', highPressure: 113, lowPressure: 86, bloodSugar: 12, heartRate: 87, testTime: '2017/12/12 18:00:00'},

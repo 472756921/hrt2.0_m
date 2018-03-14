@@ -14,10 +14,10 @@
                         <div style="color: #999999;text-align: center" v-if="it.data.length === 0">暂未设置坐诊时间</div>
                         <div v-for="(item, index) in it.data" :key="'todo-item' + (it.data.length - index)" >
                             <Row :gutter="10" style="text-align: left">
-                                <Col span="10"><div>坐诊时间：{{item.visitTime}}</div></Col>
-                                <Col span="5"><div>人数上限：{{item.num}}</div></Col>
+                                <Col span="16"><div>坐诊时间：{{item.visitTime}}</div></Col>
+                                <Col span="4"><div>人数上限：{{item.num}}</div></Col>
                                 <Col span="4"><div>已报名：{{item.actualNum}}</div></Col>
-                                <Col span="5"><Button @click="changeDate(it, item)" type="error">修改时间</Button></Col>
+                                <!--<Col span="3"><Button @click="changeDate(it, item)" type="error" size="small">修改时间</Button></Col>-->
                             </Row>
                         </div>
                     </div>
@@ -31,7 +31,9 @@
             </Row>
             <br/>
             <Row type="flex" justify="center">
-                <DatePicker  type="datetimerange" format="yyyy-MM-dd HH:mm" v-model="newToDoItemDate" placeholder="选择时间" style="width: 300px" :options="options" @on-change="getDate"></DatePicker>
+                <DatePicker  type="date" format="yyyy-MM-dd" v-model="newToDoItemDate" placeholder="选择日期" style="width: 300px" :options="options"></DatePicker>
+                <TimePicker type="time" v-model="sd" placeholder="选择开始时间" style="width: 300px" :options="options"></TimePicker>
+                <TimePicker type="time" v-model="ed" placeholder="选择结束时间" style="width: 300px" :options="options"></TimePicker>
             </Row>
             <Row slot="footer">
                 <Button type="primary" @click="addNew">确定</Button>
@@ -43,15 +45,19 @@
 <script>
     import * as tables from '../tableData';
     import {teamGroupTime, saveGroupTime} from '../../../interface';
+    import { formatDateTime2, formatDateTime3 } from '../../operating/dateTr';
+
     export default {
         name: 'setDate',
         data () {
             return {
                 teamList: [],
+                tid: '',
                 showAddNewTodo: false,
                 newToDoItemValue: '',
                 newToDoItemDate: '',
-                vdate: [],
+                sd: '',
+                ed: '',
                 teamNow: '',
                 useNum: '',
                 options: {
@@ -63,9 +69,7 @@
         },
         mounted () {
             this.getData();
-            this.$ajax.post(saveGroupTime(), { num: 0, teamId: 6, visitDate: 'string' }).then((res) => {
-            }).catch((hd) => {
-            });
+
         },
         methods: {
             getData () {
@@ -79,12 +83,16 @@
             init () {
                 this.teamList = tables.teamData;
             },
-            getDate (d) {
-                console.log(d);
-                this.vdate = d;
-            },
             addNew () {
-                console.log(this.vdate);
+                const date = formatDateTime2(this.newToDoItemDate);
+                const start = formatDateTime3(this.sd);
+                const end = formatDateTime3(this.ed);
+                this.$ajax.post(saveGroupTime(), { date: date, teamId: this.teamNow.teamId, start: start, end: end, num: this.newToDoItemValue }).then((res) => {
+                    this.$Message.success('保存成功');
+                    this.teamList.push({visitTime: date + ' ' + start + '~' + end, num: this.newToDoItemValue, actualNum: 0});
+                }).catch((hd) => {
+                    this.$Message.error('保存失败');
+                });
             },
             addNewToDoItem (it) {
                 if (it.data.length >= 3) {

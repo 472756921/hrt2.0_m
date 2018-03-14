@@ -25,7 +25,8 @@
 
 <script>
     import * as tables from '../tableData';
-    import { userServicies } from '../../../interface';
+    import * as initData from '../init_data';
+    import { userServicies, updateVisit } from '../../../interface';
     const replyButton = (vm, h, currentRow, index) => {
         return h('Poptip', {
             props: {
@@ -97,8 +98,31 @@
             },
             init () {
                 this.data1 = this.initTable1 = tables.searchTable1;
-                this.columns1 = tables.columns1;
+                this.columns1 = tables.c(initData.teamData);
                 this.columns1.forEach(item => {
+                    if (item.key === 'name') {
+                        item.render = (h, currentRow) => {
+                            return h('Button', {
+                                style: {
+                                    margin: '0 5px'
+                                },
+                                props: {
+                                    type: 'text',
+                                    size: 'small',
+                                    placement: 'top'
+                                },
+                                on: {
+                                    click: () => {
+                                        let argu = {user_id: currentRow.row.userId};
+                                        this.$router.push({
+                                            name: 'user_info',
+                                            params: argu
+                                        });
+                                    }
+                                }
+                            }, currentRow.row.name);
+                        };
+                    }
                     if (item.handle) {
                         item.render = (h, param) => {
                             let currentRowData = this.data1[param.index];
@@ -133,13 +157,12 @@
                 this.data1 = this.search(this.data1, {name: this.searchConName1});
             },
             closeQuestion (qid, index) {
-                this.data1[index].status = 2;
-                alert('关闭了id：' + qid + '的问题');
+                const _this = this;
+                this.changeStatus(2, function () { _this.data1[index].status = 2; }, qid);
             },
             openService (qid, index) {
-                this.data1[index].status = 1;
-                this.$Message.success({ content: '您开始了对' + this.data1[index].name + '的服务，请尽快联系医生进行通话', duration: 3 });
-                alert('开始了id：' + qid + '的问题');
+                const _this = this;
+                this.changeStatus(1, function () { _this.data1[index].status = 1; _this.$Message.success({ content: '您开始了对' + _this.data1[index].name + '的服务，请尽快处理', duration: 3 }); }, qid);
             },
             rowClassName (row, index) {
                 if (row.status === 0) {
@@ -148,6 +171,13 @@
                     return 'demo-table-doing-row';
                 }
                 return '';
+            },
+            changeStatus (status, reback, id) {
+                this.$ajax.get(updateVisit(), {params: { id: id, status: status }}).then((res) => {
+                    reback();
+                }).catch((hd) => {
+                    this.init();
+                });
             }
         },
         mounted () {

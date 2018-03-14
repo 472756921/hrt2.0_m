@@ -16,7 +16,7 @@
             <Row>
                 <Input v-model="searchConName1" icon="search" @on-change="handleSearch1" placeholder="请输入姓名搜索..." style="width: 200px"/>
                 <Select v-model="model1" style="width:200px" @on-change="onSelectedDrug">
-                    <Option v-for="item in teamList.data" :value="item.id" :key="item.id">{{ item.teamName }}</Option>
+                    <Option v-for="item in teamList" :value="item.id" :key="item.id">{{ item.teamName }}</Option>
                 </Select>
             </Row>
             <Row class="margin-top-10 searchable-table-con1">
@@ -66,8 +66,8 @@
         },
         methods: {
             getData () {
-                this.$ajax.get(Hdetail(), {params: {page: 1, size: 50, teamId: 1}}).then((res) => {
-                    initData.teamData = res.data.data;
+                this.$ajax.get(Hdetail()).then((res) => {
+                    initData.teamData = res.data.data.data;
                     if (res.data.data.data.length !== 0) {
                         this.model1 = res.data.data.data[0].id;
                     }

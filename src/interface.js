@@ -94,3 +94,15 @@ export const saveGroupTime = function () {
     const API = host + URL;
     return API;
 };
+// 更改状态
+export const updateVisit = function () {
+    const URL = '/userService/updateVisit';
+    const API = host + URL;
+    return API;
+};
+// 更改密码
+export const updatePassWord = function () {
+    const URL = '/user/updatePassWord';
+    const API = host + URL;
+    return API;
+};

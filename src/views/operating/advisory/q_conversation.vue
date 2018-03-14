@@ -1,6 +1,6 @@
 <template>
     <div class="conversation_content">
-        <conversation :messageID="messageID"/>
+        <conversation :messageID="messageID" :listType="listType"/>
     </div>
 </template>
 
@@ -15,7 +15,6 @@
         },
         methods: {
             showIMG () {
-                alert(1);
             }
         }
     };

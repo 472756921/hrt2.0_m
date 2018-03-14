@@ -22,23 +22,23 @@
                             <Input v-model="userForm.name" ></Input>
                         </div>
                     </FormItem>
-                    <FormItem label="用户手机：" prop="cellphone" >
-                        <div style="display:inline-block;width:204px;">
-                            <Input v-model="userForm.cellphone" @on-keydown="hasChangePhone"></Input>
-                        </div>
-                        <div style="display:inline-block;position:relative;">
-                            <Button @click="getIdentifyCode" :disabled="canGetIdentifyCode">{{ gettingIdentifyCodeBtnContent }}</Button>
-                            <div class="own-space-input-identifycode-con" v-if="inputCodeVisible">
-                                <div style="background-color:white;z-index:110;margin:10px;">
-                                    <Input v-model="securityCode" placeholder="请填写短信验证码" ></Input>
-                                    <div style="margin-top:10px;text-align:right">
-                                        <Button type="ghost" @click="cancelInputCodeBox">取消</Button>
-                                        <Button type="primary" @click="submitCode" :loading="checkIdentifyCodeLoading">确定</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </FormItem>
+                    <!--<FormItem label="用户手机：" prop="cellphone" >-->
+                        <!--<div style="display:inline-block;width:204px;">-->
+                            <!--<Input v-model="userForm.cellphone" @on-keydown="hasChangePhone"></Input>-->
+                        <!--</div>-->
+                        <!--<div style="display:inline-block;position:relative;">-->
+                            <!--&lt;!&ndash;<Button @click="getIdentifyCode" :disabled="canGetIdentifyCode">{{ gettingIdentifyCodeBtnContent }}</Button>&ndash;&gt;-->
+                            <!--<div class="own-space-input-identifycode-con" v-if="inputCodeVisible">-->
+                                <!--<div style="background-color:white;z-index:110;margin:10px;">-->
+                                    <!--<Input v-model="securityCode" placeholder="请填写短信验证码" ></Input>-->
+                                    <!--<div style="margin-top:10px;text-align:right">-->
+                                        <!--<Button type="ghost" @click="cancelInputCodeBox">取消</Button>-->
+                                        <!--<Button type="primary" @click="submitCode" :loading="checkIdentifyCodeLoading">确定</Button>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</FormItem>-->
                     <FormItem label="公司：">
                         <span>{{ userForm.company }}</span>
                     </FormItem>
@@ -48,25 +48,25 @@
                     <FormItem label="登录密码：">
                         <Button type="text" size="small" @click="showEditPassword">修改密码</Button>
                     </FormItem>
-                    <div>
-                        <Button type="text" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>
-                        <Button type="primary" style="width: 100px;" :loading="save_loading" @click="saveEdit">保存</Button>
-                    </div>
+                    <!--<div>-->
+                        <!--<Button type="text" style="width: 100px;" @click="cancelEditUserInfor">取消</Button>-->
+                        <!--<Button type="primary" style="width: 100px;" :loading="save_loading" @click="saveEdit">保存</Button>-->
+                    <!--</div>-->
                 </Form>
             </div>
         </Card>
         <Modal v-model="editPasswordModal" :closable='false' :mask-closable=false :width="500">
             <h3 slot="header" style="color:#2D8CF0">修改密码</h3>
             <Form ref="editPasswordForm" :model="editPasswordForm" :label-width="100" label-position="right" :rules="passwordValidate">
-                <FormItem label="原密码" prop="oldPass" :error="oldPassError">
-                    <Input v-model="editPasswordForm.oldPass" placeholder="请输入现在使用的密码" ></Input>
-                </FormItem>
+                <!--<FormItem label="原密码" prop="oldPass" :error="oldPassError">-->
+                    <!--<Input v-model="editPasswordForm.oldPass" placeholder="请输入现在使用的密码" ></Input>-->
+                <!--</FormItem>-->
                 <FormItem label="新密码" prop="newPass">
                     <Input v-model="editPasswordForm.newPass" placeholder="请输入新密码，至少6位字符" ></Input>
                 </FormItem>
-                <FormItem label="确认新密码" prop="rePass">
-                    <Input v-model="editPasswordForm.rePass" placeholder="请再次输入新密码" ></Input>
-                </FormItem>
+                <!--<FormItem label="确认新密码" prop="rePass">-->
+                    <!--<Input v-model="editPasswordForm.rePass" placeholder="请再次输入新密码" ></Input>-->
+                <!--</FormItem>-->
             </Form>
             <div slot="footer">
                 <Button type="text" @click="cancelEditPass">取消</Button>
@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import {Hdetail, updatePassWord} from '../../interface';
 export default {
     name: 'ownspace_index',
     data () {
@@ -208,12 +209,21 @@ export default {
             this.editPasswordModal = false;
         },
         saveEditPass () {
-            this.$refs['editPasswordForm'].validate((valid) => {
-                if (valid) {
-                    this.savePassLoading = true;
-                    // you can write ajax request here
-                }
+            if (this.editPasswordForm.newPass === '') {
+                this.$Message.warning('请输入新密码');
+                return false;
+            }
+            this.$ajax.post(updatePassWord(), {password: this.editPasswordForm.newPass}).then((res) => {
+                this.$Message.warning('修改成功');
+            }).catch((hd) => {
+                this.$Message.warning('修改失败');
             });
+            // this.$refs['editPasswordForm'].validate((valid) => {
+            //     if (valid) {
+            //         this.savePassLoading = true;
+            //         // you can write ajax request here
+            //     }
+            // });
         },
         init () {
             this.userForm.name = 'Lison';
@@ -250,10 +260,17 @@ export default {
                 this.$Message.success('保存成功');
                 this.save_loading = false;
             }, 1000);
+        },
+        getUserData () {
+            this.$ajax.get(Hdetail()).then((res) => {
+                this.userForm.name = res.data.data.name;
+            }).catch((hd) => {
+            });
         }
     },
     mounted () {
         this.init();
+        this.getUserData();
     }
 };
 </script>

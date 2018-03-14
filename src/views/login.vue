@@ -69,8 +69,8 @@
                                 } else {
                                     Cookies.set('access', 1);
                                 }
-                                this.$ajax.get(Hdetail(), {params: {page: 1, size: 50, teamId: 1}}).then((res) => {
-                                    initData.teamData = res.data.data;
+                                this.$ajax.get(Hdetail()).then((res) => {
+                                    initData.teamData = res.data.data.data;
                                     this.$router.push({
                                         name: 'home_index'
                                     });
