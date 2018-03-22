@@ -87,7 +87,7 @@
         return h('Poptip', {
             props: {
                 confirm: true,
-                title: '您确定要关闭这条问答消息吗?',
+                title: '您确定要结束这条问答消息吗?',
                 transfer: true
             },
             on: {
@@ -105,7 +105,7 @@
                     size: 'small',
                     placement: 'top'
                 }
-            }, '关闭')
+            }, '结束服务')
         ]);
     };
     export default {

@@ -75,6 +75,7 @@
     import themeSwitch from './main-components/theme-switch/theme-switch.vue';
     import Cookies from 'js-cookie';
     import util from '@/libs/util.js';
+    import {logout} from '../interface';
     
     export default {
         components: {
@@ -144,10 +145,18 @@
                     });
                 } else if (name === 'loginout') {
                     // 退出登录
-                    this.$store.commit('logout', this);
-                    this.$store.commit('clearOpenedSubmenu');
-                    this.$router.push({
-                        name: 'login'
+                    this.$ajax.get(logout()).then((res) => {
+                        this.$store.commit('logout', this);
+                        this.$store.commit('clearOpenedSubmenu');
+                        this.$router.push({
+                            name: 'login'
+                        });
+                    }).catch((hd) => {
+                        this.$store.commit('logout', this);
+                        this.$store.commit('clearOpenedSubmenu');
+                        this.$router.push({
+                            name: 'login'
+                        });
                     });
                 }
             },

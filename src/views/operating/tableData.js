@@ -2,9 +2,16 @@ import { GetAge } from './dateTr';
 
 export let c = (d) => {
     return [
-        {key: 'name', title: '姓名'},
+        {key: 'name', title: '微信名'},
+        {key: 'realName', title: '姓名'},
         {key: 'phone', title: '电话号码'},
-        {key: 'startDate', title: '时间'},
+        {
+            key: 'startDate',
+            title: '时间',
+            render: (h, p) => {
+                return p.row.startDate.substr(0, 10);
+            }
+        },
         {key: 'idNumber', title: '身份证号', width: 157},
         {
             key: 'age',
@@ -44,7 +51,8 @@ export let c = (d) => {
 export let searchTable1 = [];
 
 export let columns2 = [
-    {key: 'name', title: '姓名'},
+    {key: 'name', title: '微信名'},
+    {key: 'realName', title: '姓名'},
     {key: 'phone', title: '电话号码'},
     {key: 'id_number', title: '身份证号', width: 157},
     {

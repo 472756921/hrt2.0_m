@@ -40,6 +40,12 @@ export const ajaxLogin = function () {
     const API = host + URL;
     return API;
 };
+// 健管师注销登录
+export const logout = function () {
+    const URL = '/login/logout';
+    const API = host + URL;
+    return API;
+};
 // 健管师信息
 export const Hdetail = function () {
     const URL = '/health/detail';
