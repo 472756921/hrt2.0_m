@@ -112,3 +112,9 @@ export const updatePassWord = function () {
     const API = host + URL;
     return API;
 };
+// 获取用户健康数据
+export const healthdata = function () {
+    const URL = '/customer/user/health/data';
+    const API = host + URL;
+    return API;
+};
