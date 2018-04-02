@@ -15,6 +15,11 @@ let lowPressure = [];
 export default {
     name: 'serviceRequests',
     created() {
+        time = [];
+        bloodSugar = [];
+        heartRate = [];
+        highPressure = [];
+        lowPressure = [];
         this.$ajax.get(healthdata(), {params: {customerId: this.$route.params.user_id}}).then((res) => {
             res.data.data.map((it, i) => {
                 time.push(it.test_time);
